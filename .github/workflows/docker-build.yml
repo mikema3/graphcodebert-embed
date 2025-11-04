@@ -41,6 +41,7 @@ jobs:
             type=ref,event=branch
       
       - name: Build and push
+        id: docker_build
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -51,5 +52,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       
-      - name: Image digest
-        run: echo ${{ steps.meta.outputs.tags }}
+      - name: Show build outputs
+        run: |
+          echo "Image digest: ${{ steps.docker_build.outputs.digest }}"
+          echo "Tags pushed:"
+          echo "${{ steps.meta.outputs.tags }}"
